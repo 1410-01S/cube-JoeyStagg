@@ -2,20 +2,22 @@ package com.example.project;
 
 import java.util.Scanner;
 
-//thoughts: draw out on paper how the cube is going to sit (perspective) while being turned then I can brute force everything
-//figure out how to log the opposite of the inputs (how to solve after it's mixed up)
-
-// ---------0y 1y 2y
-// ---------3y 4y 5y
-// ---------6y 7y 8y
-// 0o 1o 2o 0b 1b 2b 0r 1r 2r 0g 1g 2g
-// 3o 4o 5o 3b 4b 5b 3r 4r 5r 3g 4g 5g
-// 6o 7o 8o 6b 7b 8b 6r 7r 8r 6g 7g 8g
-// ---------0w 1w 2w
-// ---------3w 4w 5w
-// ---------6w 7w 8w
-
 public class Cube {
+	// thoughts: draw out on paper how the cube is going to sit (perspective) while
+	// being turned then I can brute force everything
+	// figure out how to log the opposite of the inputs (how to solve after it's
+	// mixed up)
+
+	// ---------0y 1y 2y
+	// ---------3y 4y 5y
+	// ---------6y 7y 8y
+	// 0o 1o 2o 0b 1b 2b 0r 1r 2r 0g 1g 2g
+	// 3o 4o 5o 3b 4b 5b 3r 4r 5r 3g 4g 5g
+	// 6o 7o 8o 6b 7b 8b 6r 7r 8r 6g 7g 8g
+	// ---------0w 1w 2w
+	// ---------3w 4w 5w
+	// ---------6w 7w 8w
+
 	// This initializes the original cube faces that will inherit temporary values
 	// after all changes are made
 	static String[][] cubeFaceRed = {
@@ -54,7 +56,6 @@ public class Cube {
 			{ "6w", "7w", "8w" },
 	};
 
-
 	// This initializes the temporary cube face to write over
 	static String[][] cubeFaceTemp = new String[3][3];
 
@@ -70,8 +71,6 @@ public class Cube {
 
 	// prints entire cube (all 6 sides)
 	static void showEntireCube() {
-
-		
 		show(cubeFaceRed);
 		System.out.println();
 		show(cubeFaceBlue);
@@ -86,13 +85,13 @@ public class Cube {
 
 	}
 
-	static void rotateRow(String[][] face1, String[][] face2, String[][] face3, String[][] face4, int row){
-		String[][] tempRow = new String[4][3]; //First [] is temp spot # second [] is row values
-		for(int i = 0; i < 3; i++){
-			tempRow[0][i] = face1[row][i]; //save top red
-			tempRow[1][i] = face2[row][i]; //save top blue
-			tempRow[2][i] = face3[row][i]; //save top green
-			tempRow[3][i] = face4[row][i]; //save top orange
+	static void rotateRow(String[][] face1, String[][] face2, String[][] face3, String[][] face4, int row) {
+		String[][] tempRow = new String[4][3]; // First [] is temp spot # second [] is row values
+		for (int i = 0; i < 3; i++) {
+			tempRow[0][i] = face1[row][i]; // save top red
+			tempRow[1][i] = face2[row][i]; // save top blue
+			tempRow[2][i] = face3[row][i]; // save top green
+			tempRow[3][i] = face4[row][i]; // save top orange
 			face1[row][i] = tempRow[2][i];
 			face2[row][i] = tempRow[0][i];
 			face3[row][i] = tempRow[3][i];
@@ -100,26 +99,28 @@ public class Cube {
 		}
 	}
 
-	static void rotateCol(String[][] face1, String[][] face2, String[][] face3, String[][] face4, int col){
-		String[][] tempCol = new String[3][4]; //First [] is temp spot # second [] is col values
-		for(int i = 0; i < 3; i++){
-			tempCol[i][0] = face1[i][col];//save right yellow
-			tempCol[i][1] = face2[i][col];//save right blue
-			tempCol[i][2] = face3[i][col];//save right white
-			tempCol[i][3] = face4[i][col];//save right green
+	static void rotateCol(String[][] face1, String[][] face2, String[][] face3, String[][] face4, int col) {
+		String[][] tempCol = new String[3][4]; // First [] is temp spot # second [] is col values
+		for (int i = 0; i < 3; i++) {
+			tempCol[i][0] = face1[i][col];// save right yellow
+			tempCol[i][1] = face2[i][col];// save right blue
+			tempCol[i][2] = face3[i][col];// save right white
+			tempCol[i][3] = face4[i][col];// save right green
 			face1[i][col] = tempCol[i][1];
 			face2[i][col] = tempCol[i][2];
 			face3[i][col] = tempCol[i][3];
 			face4[i][col] = tempCol[i][0];
+
 		}
 	}
 
-	static void swapCol(String[][] face1){                    //somethings wrong
-		String[] temp = new String[3];
-		for(int i = 0; i < 3; i++){
-			temp[i] = face1[i][0];
-			face1[i][0] = face1[i][2];
-			face1[i][2] = temp[i];
+	static void swapCol(String[][] face1) { // somethings wrong ----------- not used right now!
+		String[][] temp = new String[2][3];
+		for (int i = 0; i < 3; i++) {
+			temp[0][i] = face1[i][0]; // temp[0] = green left side
+			temp[1][i] = face1[i][2]; // temp[1] = green right side
+			face1[i][0] = temp[1][i]; // green left side = right side
+			face1[i][2] = temp[0][i]; // green right side = left side
 		}
 	}
 
@@ -209,7 +210,7 @@ public class Cube {
 			case "R":
 				rotate(cubeFaceRed, true);
 				rotateCol(cubeFaceYellow, cubeFaceBlue, cubeFaceWhite, cubeFaceGreen, 2);
-				swapCol(cubeFaceGreen);
+				// swapCol(cubeFaceGreen);
 				break;
 			case "R'":
 				rotate(cubeFaceRed, false);
@@ -223,7 +224,7 @@ public class Cube {
 				rotateCol(cubeFaceYellow, cubeFaceBlue, cubeFaceWhite, cubeFaceGreen, 0);
 				rotateCol(cubeFaceYellow, cubeFaceBlue, cubeFaceWhite, cubeFaceGreen, 0);
 				rotateCol(cubeFaceYellow, cubeFaceBlue, cubeFaceWhite, cubeFaceGreen, 0);
-				swapCol(cubeFaceGreen);
+				// swapCol(cubeFaceGreen);
 				break;
 			case "L'":
 				rotate(cubeFaceOrange, false);
@@ -251,8 +252,7 @@ public class Cube {
 
 	// This is the main method
 	public static void main(String[] args) {
-		
-	
+
 		Scanner in = new Scanner(System.in);
 
 		// To see what the cube looks like before you make rotations
