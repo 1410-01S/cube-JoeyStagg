@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Random;
 
 //This program creates and mimick rotations on a rubik's cube
 //Author: Joey Stagg
@@ -26,39 +27,39 @@ public class Cube {
 	// Creates entire cube
 	static String[][][] cube = {
 			{
-					{ "0r", "1r", "2r" },
-					{ "3r", "4r", "5r" },
-					{ "6r", "7r", "8r" },
+					{ "r", "r", "r" },
+					{ "r", "r", "r" },
+					{ "r", "r", "r" },
 			},
 
 			{
-					{ "0b", "1b", "2b" },
-					{ "3b", "4b", "5b" },
-					{ "6b", "7b", "8b" },
+					{ "b", "b", "b" },
+					{ "b", "b", "b" },
+					{ "b", "b", "b" },
 			},
 
 			{
-					{ "0o", "1o", "2o" },
-					{ "3o", "4o", "5o" },
-					{ "6o", "7o", "8o" },
+					{ "o", "o", "o" },
+					{ "o", "o", "o" },
+					{ "o", "o", "o" },
 			},
 
 			{
-					{ "0g", "1g", "2g" },
-					{ "3g", "4g", "5g" },
-					{ "6g", "7g", "8g" },
+					{ "g", "g", "g" },
+					{ "g", "g", "g" },
+					{ "g", "g", "g" },
 			},
 
 			{
-					{ "0y", "1y", "2y" },
-					{ "3y", "4y", "5y" },
-					{ "6y", "7y", "8y" },
+					{ "y", "y", "y" },
+					{ "y", "y", "y" },
+					{ "y", "y", "y" },
 			},
 
 			{
-					{ "0w", "1w", "2w" },
-					{ "3w", "4w", "5w" },
-					{ "6w", "7w", "8w" },
+					{ "w", "w", "w" },
+					{ "w", "w", "w" },
+					{ "w", "w", "w" },
 			},
 	};
 
@@ -89,11 +90,11 @@ public class Cube {
 		if (clockwise) {
 			for (int i = 0; i < 3; i++) {
 				for (int j = 0; j < 3; j++) {
-					if (cube[face][i][j] == cube[face][i][2]) {
+					if (j == 2) {
 						temp[face][i][j] = cube[face][j - 2][i];
-					} else if (cube[face][i][j] == cube[face][i][1]) {
+					} else if (j == 1) {
 						temp[face][i][j] = cube[face][j][i];
-					} else if (cube[face][i][j] == cube[face][i][0]) {
+					} else if (j == 0) {
 						temp[face][i][j] = cube[face][j + 2][i];
 					}
 				}
@@ -104,17 +105,18 @@ public class Cube {
 					cube[face][i][j] = temp[face][i][j];
 				}
 			}
+
 		} else if (!clockwise) {
 
 			for (int ccl = 0; ccl < 3; ccl++) { // This for loop is because going clockwise 3 times == counterclockwise
 												// 1 time
 				for (int i = 0; i < 3; i++) {
 					for (int j = 0; j < 3; j++) {
-						if (cube[i][j] == cube[i][2]) {
+						if (j == 2) {
 							temp[face][i][j] = cube[face][j - 2][i];
-						} else if (cube[face][i][j] == cube[face][i][1]) {
+						} else if (j == 1) {
 							temp[face][i][j] = cube[face][j][i];
-						} else if (cube[face][i][j] == cube[face][i][0]) {
+						} else if (j == 0) {
 							temp[face][i][j] = cube[face][j + 2][i];
 						}
 					}
@@ -147,7 +149,6 @@ public class Cube {
 					cube[4][i][col] = temp[0][i][col];// right yellow turns blue
 					cube[5][i][col] = temp[3][i][col];// right white turns green
 					cube[3][j][col2] = temp[1][i][col];// left green turns yellow
-
 				}
 				break;
 			case 1:// blue face (F)
@@ -174,7 +175,6 @@ public class Cube {
 					cube[4][i][col] = temp[3][i][col];// left yellow turns blue
 					cube[5][i][col] = temp[0][i][col];// left white turns green
 					cube[3][j][col2] = temp[2][i][col];// right green turns yellow
-
 				}
 				break;
 			case 3:// green face (B)
@@ -242,7 +242,7 @@ public class Cube {
 			argsCheck = true;
 		}
 		System.out.println(
-				"Enter (u, u', d, d', r, r', l, l', f, f', b, b') to rotate a side or \"show\" to see current cube or \"solve\" to see steps to solve current cube or \"stop\" to quit");
+				"Enter (u, u', d, d', r, r', l, l', f, f', b, b') to rotate a side || \"show\" to see current cube || \"solve\" to see steps to solve current cube || \"random\" to randomize the cube || \"stop\" to quit");
 		boolean keepGoing = true;
 		while (keepGoing) {
 			String input;
@@ -277,7 +277,6 @@ public class Cube {
 					rotateEdge(cube, 4, 2, 0, 0, 0);
 					rotateEdge(cube, 4, 2, 0, 0, 0);
 					solve.add("d'");
-
 					break;
 				case "d'":
 					rotate(cube, false, 5);
@@ -340,6 +339,37 @@ public class Cube {
 					break;
 				case "show":
 					show(cube);
+					break;
+				case "random":
+					Random random = new Random();
+					for (int i = 0; i < 10; i++) {
+						int randomFace = random.nextInt(5);
+						if (randomFace == 0) {
+							rotate(cube, true, 0);
+							rotateEdge(cube, 0, 0, 2, 0, 0);
+							solve.add("r'");
+						} else if (randomFace == 1) {
+							rotate(cube, true, 1);
+							rotateEdge(cube, 1, 2, 2, 0, 0);
+							solve.add("f'");
+						} else if (randomFace == 2) {
+							rotate(cube, true, 2);
+							rotateEdge(cube, 2, 0, 0, 0, 2);
+							solve.add("l'");
+						} else if (randomFace == 3) {
+							rotate(cube, false, 3);
+							rotateEdge(cube, 3, 0, 0, 2, 2);
+							solve.add("b");
+						} else if (randomFace == 4) {
+							rotate(cube, true, 4);
+							rotateEdge(cube, 4, 0, 0, 0, 0);
+							solve.add("u'");
+						} else if (randomFace == 5) {
+							rotate(cube, false, 5);
+							rotateEdge(cube, 4, 2, 0, 0, 0);
+							solve.add("d");
+						}
+					}
 					break;
 				default:
 					System.out.println("Unrecognized input");
